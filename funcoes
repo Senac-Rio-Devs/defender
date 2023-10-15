@@ -1,0 +1,13 @@
+<?php
+// Função para gerar uma senha segura
+function gerarSenhaSegura($tamanho = 12) {
+    $caracteres = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()';
+    $senha = '';
+    
+    for ($i = 0; $i < $tamanho; $i++) {
+        $senha .= $caracteres[random_int(0, strlen($caracteres) - 1)];
+    }
+    
+    return $senha;
+}
+?>
