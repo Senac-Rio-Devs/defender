@@ -1,5 +1,6 @@
 <?php
 require_once 'config.php';
+require_once 'funcoes.php'; // Certifique-se de que o caminho para o arquivo funcoes.php está correto
 
 try {
     $conn = new PDO("mysql:host=$hostname;dbname=$database", $username, $password);
@@ -10,6 +11,13 @@ try {
 } catch (PDOException $e) {
     die("Falha na conexão: " . $e->getMessage());
 }
+
+// Gerar uma senha segura
+$novaSenha = gerarSenhaSegura();
+$senhaHash = password_hash($novaSenha, PASSWORD_DEFAULT);
+
+echo "Nova senha gerada: $novaSenha<br>";
+echo "Senha criptografada: $senhaHash";
 
 // Resto do seu código...
 
@@ -26,6 +34,7 @@ if ($result) {
 // Feche a conexão quando terminar
 $conn = null;
 ?>
+
 
 
 <!DOCTYPE html>
