@@ -1,37 +1,32 @@
 <?php
-// Conexão com o banco de dados (substitua pelas suas credenciais)
-$servername = "seuserver";
-$username = "seuusuario";
-$password = "suasenha";
-$dbname = "meubanco";
+require_once 'config.php';
 
-$conn = new mysqli($servername, $username, $password, $dbname);
+try {
+    $conn = new PDO("mysql:host=$hostname;dbname=$database", $username, $password);
 
-// Verifica a conexão
-if ($conn->connect_error) {
-    die("Falha na conexão: " . $conn->connect_error);
+    // Configuração adicional de segurança para o PDO
+    $conn->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    die("Falha na conexão: " . $e->getMessage());
 }
 
-// Processamento do formulário de cadastro
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $nome = $_POST['nome'];
-    $email = $_POST['email'];
-    $senha = password_hash($_POST['senha'], PASSWORD_DEFAULT); // Use funções de hash para armazenar senhas de forma segura
-    $cpf = $_POST['cpf'];
-    $endereco = $_POST['endereco'];
-    $telefone = $_POST['telefone'];
+// Resto do seu código...
 
-    $sql = "INSERT INTO usuarios (nome, email, senha, cpf, endereco, telefone) VALUES ('$nome', '$email', '$senha', '$cpf', '$endereco', '$telefone')";
+// Exemplo de consulta usando PDO
+$query = "SELECT * FROM sua_tabela";
+$result = $conn->query($query);
 
-    if ($conn->query($sql) === TRUE) {
-        echo "Cadastro realizado com sucesso.";
-    } else {
-        echo "Erro: " . $sql . "<br>" . $conn->error;
+if ($result) {
+    foreach ($result as $row) {
+        // Processar os resultados
     }
 }
 
-$conn->close();
+// Feche a conexão quando terminar
+$conn = null;
 ?>
+
 
 <!DOCTYPE html>
 <html>
